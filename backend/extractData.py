@@ -13,12 +13,18 @@ search = SearchEngine(simple_zipcode=True)
 zips = []
 for zipcode in zipcodes['Zip']:
     zc = search.by_zipcode(str(zipcode))
-    locations = {}
-    locations['lat'] = zc.lat
-    locations['lng'] = zc.lng
-    if locations['lat'] == None:
+    if zc.lat == None or zc.lng == None:
         print("Error: {}".format(zipcode))
         continue
+
+    locations = {}
+    locations['type'] = "Feature"
+    geo = {}
+    geo['type'] = "Point"
+    geo['coordinates'] = [zc.lng, zc.lat]
+    locations['geometry'] = geo
+    locations['properties'] = {"name": "location"}
+
     zips.append(locations)
 
 # print(zips)
